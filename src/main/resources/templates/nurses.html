@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Nurse Details</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+<div class="container mt-4">
+
+  <h3>Nurse Details</h3>
+  <a class="btn btn-primary mb-3" href="/nurses/add">Add Nurse</a>
+
+  <table class="table table-bordered table-striped">
+    <thead class="table-dark">
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Shift</th>
+        <th>Status</th>
+        <th>Entry Time</th>
+        <th>Worked Time</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr th:each="n : ${nurses}">
+        <td th:text="${n.id}"></td>
+        <td th:text="${n.name}"></td>
+        <td th:text="${n.shift}"></td>
+
+        <td>
+            <span class="status" th:text="${n.status}"></span>
+        </td>
+
+        <td th:text="${n.entryTime}"></td>
+
+        <td>
+            <span class="worked-time"
+                  th:attr="data-start-time=${n.entryTime},
+                           data-status=${n.status},
+                           data-exit-time=${n.exitTime}">
+            </span>
+        </td>
+
+        <td>
+            <a th:href="@{/nurses/edit/{id}(id=${n.id})}" class="btn btn-sm btn-warning">Edit</a>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+</div>
+
+<script>
+setInterval(() => {
+    document.querySelectorAll(".worked-time").forEach(el => {
+
+        const start = el.getAttribute("data-start-time");
+        const status = el.getAttribute("data-status");
+        const exit = el.getAttribute("data-exit-time");
+
+        if (!start) return;
+
+        const startTime = new Date(start);
+        const nowIST = new Date().toLocaleString("en-US", { timeZone: "Asia/Kolkata" });
+        const now = new Date(nowIST);
+
+        let diffSec;
+
+        // If nurse finished shift → calculate total time using exitTime
+        if (status === "NOT_WORKING" && exit) {
+            const exitTime = new Date(exit);
+            diffSec = Math.floor((exitTime - startTime) / 1000);
+        } else {
+            // WORKING → live timer
+            diffSec = Math.floor((now - startTime) / 1000);
+        }
+
+        // Stop at 12 hours
+        if (diffSec >= 43200) { // 12 * 60 * 60 = 43200 seconds
+            diffSec = 43200;
+            const statusEl = el.closest("tr").querySelector(".status");
+            statusEl.innerText = "DUTY ENDED";
+            statusEl.style.color = "red";
+        }
+
+        const hours = Math.floor(diffSec / 3600);
+        const minutes = Math.floor((diffSec % 3600) / 60);
+        const seconds = diffSec % 60;
+
+        el.innerText = `${hours}h ${minutes}m ${seconds}s`;
+
+    });
+}, 1000);
+</script>
+
+</body>
+</html>

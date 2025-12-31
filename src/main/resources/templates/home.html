@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vasanth Chowdary Hospitals</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+
+    <style>
+        /* ================= NEWS TICKER ================= */
+        .news-ticker {
+            background-color: #0d6efd;
+            color: white;
+            overflow: hidden;
+            white-space: nowrap;
+            padding: 8px 0;
+            font-weight: bold;
+        }
+
+        .news-text {
+            display: inline-block;
+            padding-left: 100%;
+            animation: scroll-left 18s linear infinite;
+        }
+
+        @keyframes scroll-left {
+            0% {
+                transform: translateX(0);
+            }
+            100% {
+                transform: translateX(-100%);
+            }
+        }
+
+        /* ================= DOCTOR CARDS ================= */
+        .doctor-card {
+            transition: 0.3s;
+            border-radius: 12px;
+        }
+
+        .doctor-card:hover {
+            transform: scale(1.03);
+            box-shadow: 0 4px 14px rgba(0,0,0,0.2);
+        }
+
+        .doctor-photo {
+            width: 110px;
+            height: 110px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #0d6efd;
+            display: block;
+            margin: auto;
+        }
+    </style>
+</head>
+<body>
+
+<!-- ============================ NAVBAR ============================ -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow">
+    <div class="container-fluid">
+
+        <a class="navbar-brand fw-bold" href="/" th:href="@{/}">
+            <i class="bi bi-hospital"></i> Vasanth Chowdary Hospitals
+        </a>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" 
+                data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+
+                <a href="https://wa.me/9182229653" target="_blank" class="btn btn-success mx-2">
+                    <i class="bi bi-whatsapp"></i> Chat
+                </a>
+
+                <li class="nav-item">
+                    <a class="nav-link text-white" th:href="@{/}">Home</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link text-white" th:href="@{/patient_registration}">
+                        Patient Registration
+                    </a>
+                </li>
+
+                <!-- Nurses Dropdown -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle text-white" href="#" data-bs-toggle="dropdown">
+                        Nurses
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a class="dropdown-item" th:href="@{/nurses/edit/0}">
+                                Nurse Registration
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" th:href="@{/nurses}">
+                                View Nurses
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" th:href="@{/nurses/attendance}">
+                                Nurse Attendance
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- ============================ NEWS SCROLL ============================ -->
+
+
+<!-- ============================ DOCTORS SECTION ============================ -->
+<div class="container mt-5">
+
+    <h3 class="text-center mb-4 text-primary fw-bold">
+        <i class="bi bi-person-badge"></i> Our Specialist Doctors
+    </h3>
+
+    <div class="row">
+
+        <!-- Doctor 1 -->
+        <div class="col-md-4 mb-4">
+            <div class="card doctor-card p-3 text-center shadow">
+                <img src="https://static.vecteezy.com/system/resources/thumbnails/071/551/144/small/portrait-of-a-friendly-smiling-male-doctor-in-a-modern-hospital-clinic-photo.jpg" 
+                     class="doctor-photo mb-3">
+                <h5 class="text-primary fw-bold">Dr. Vasanth Chowdary</h5>
+                <p><b>ID:</b> 108021</p>
+                <p><b>Specialization:</b> Cardiologist</p>
+                <p><b>Timings:</b> 10 AM - 04 PM</p>
+                <a th:href="@{/patient_registration(doctor='Dr. Vasanth Chowdary')}" 
+                   class="btn btn-primary w-75 mx-auto">
+                    Take Appointment
+                </a>
+            </div>
+        </div>
+
+        <!-- Doctor 2 -->
+        <div class="col-md-4 mb-4">
+            <div class="card doctor-card p-3 text-center shadow">
+                <img src="https://media.istockphoto.com/id/179011088/photo/indian-doctor.jpg?s=612x612&w=0&k=20&c=EwRn1EWy79prCtdo8yHM6hvCVVcaKTznVBpVURPJxt4=" 
+                     class="doctor-photo mb-3">
+                <h5 class="text-primary fw-bold">Dr. Revanth Reddy</h5>
+                <p><b>ID:</b> 223453</p>
+                <p><b>Specialization:</b> Physiotherapy</p>
+                <p><b>Timings:</b> 12 PM - 02 PM</p>
+                <a th:href="@{/patient_registration(doctor='Dr. Hemanth Reddy')}" 
+                   class="btn btn-primary w-75 mx-auto">
+                    Take Appointment
+                </a>
+            </div>
+        </div>
+
+        <!-- Doctor 3 -->
+        <div class="col-md-4 mb-4">
+            <div class="card doctor-card p-3 text-center shadow">
+                <img src="https://media.istockphoto.com/id/1742056601/photo/photo-of-doctor-lady-smile-looking-at-camera-wear-stethoscope-white-uniform-isolate-white.jpg?s=612x612&w=0&k=20&c=XxMIMOssaMAT2zViPWohJGX51ymcSyY9RxtbiYYLEIE=" 
+                     class="doctor-photo mb-3">
+                <h5 class="text-primary fw-bold">Dr. Saraswathi</h5>
+                <p><b>ID:</b> 312356</p>
+                <p><b>Specialization:</b> Skin Specialist</p>
+                <p><b>Timings:</b> 03 PM - 07 PM</p>
+                <a th:href="@{/patient_registration(doctor='Dr. Chandana Chowdary')}" 
+                   class="btn btn-primary w-75 mx-auto">
+                    Take Appointment
+                </a>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- ============================ FOOTER ============================ -->
+<footer class="bg-dark text-white text-center p-3 mt-5">
+    © 2025 Vasanth Chowdary Hospitals | All Rights Reserved
+</footer>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>
+

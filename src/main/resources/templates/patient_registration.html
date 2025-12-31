@@ -1,0 +1,168 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Patient Registration</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<style>
+  #timerBox {
+    font-weight: bold;
+    color: red;
+    margin-top: 10px;
+  }
+</style>
+</head>
+<body>
+<div class="container mt-5">
+
+  <h2 class="mb-4">Patient Registration</h2>
+
+  <form id="regForm">
+
+    <input type="hidden" id="merchantOrderId" />
+
+    <div class="mb-3">
+      <label class="form-label">Patient Name</label>
+      <input type="text" id="name" class="form-control" placeholder="Enter full name" required>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Disease</label>
+      <input type="text" id="disease" class="form-control" placeholder="Enter disease" required>
+    </div>
+
+    <div class="row">
+      <div class="col-md-4 mb-3">
+        <label class="form-label">Age</label>
+        <input type="number" id="age" class="form-control" min="1" max="120" required>
+      </div>
+
+      <div class="col-md-4 mb-3">
+        <label class="form-label">Gender</label>
+        <select id="gender" class="form-select" required>
+          <option value="" disabled selected>Select Gender</option>
+          <option>Male</option>
+          <option>Female</option>
+          <option>Other</option>
+        </select>
+      </div>
+
+      <div class="col-md-4 mb-3">
+        <label class="form-label">Doctor</label>
+        <input id="doctorName" class="form-control" placeholder="Doctor name" th:value="${patient.doctorName}">
+      </div>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Payment Method</label>
+      <select id="paymentMethod" class="form-select" required>
+        <option value="" disabled selected>Select Payment</option>
+        <option value="Cash">Cash</option>
+        <option value="UPI">UPI</option>
+        <option value="PhonePe">PhonePe</option>
+      </select>
+    </div>
+
+    <div class="mb-3" id="upiBox" style="display:none;">
+      <label class="form-label">Enter UPI ID (optional)</label>
+      <input id="upiId" class="form-control" placeholder="example: name@oksbi">
+    </div>
+
+    <div id="timerBox"></div>
+
+    <button type="button" id="payBtn" class="btn btn-success mt-3">Submit & Pay ₹300</button>
+    <a href="/patients" class="btn btn-secondary mt-3 ms-2">View Patients</a>
+  </form>
+
+</div>
+
+<script>
+  const paymentMethodEl = document.getElementById('paymentMethod');
+  const upiBox = document.getElementById('upiBox');
+  const payBtn = document.getElementById('payBtn');
+  const timerBox = document.getElementById('timerBox');
+
+  // Show UPI box only if UPI or PhonePe is selected
+  paymentMethodEl.addEventListener('change', () => {
+    upiBox.style.display = (paymentMethodEl.value === 'UPI' || paymentMethodEl.value === 'PhonePe') ? 'block' : 'none';
+  });
+
+  payBtn.addEventListener('click', async () => {
+
+    // Validate fields
+    if (!document.getElementById('name').value || !document.getElementById('disease').value || !document.getElementById('age').value || !document.getElementById('gender').value) {
+      alert('Please fill all required fields');
+      return;
+    }
+
+    const payload = {
+      name: document.getElementById('name').value,
+      disease: document.getElementById('disease').value,
+      age: parseInt(document.getElementById('age').value),
+      gender: document.getElementById('gender').value,
+      doctorName: document.getElementById('doctorName').value,
+      paymentMethod: document.getElementById('paymentMethod').value,
+      upiId: document.getElementById('upiId').value || null
+    };
+
+    // Create pending patient record on server
+    const res = await fetch('/api/patient/initiate', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify(payload)
+    });
+
+    const data = await res.json();
+    const mo = data.merchantOrderId;
+    document.getElementById('merchantOrderId').value = mo;
+
+    // Handle Cash Payment
+    if (payload.paymentMethod === 'Cash') {
+      await fetch(`/api/patient/${mo}/mark-success`, { method: 'POST', headers: {'Content-Type':'application/json'} });
+      alert('Registered successfully with Cash payment');
+      window.location = '/patients';
+      return;
+    }
+
+    // Handle UPI/PhonePe
+    const upiLink = `upi://pay?pa=${payload.upiId || 'your@ybl'}&pn=Vasanth+Chowdary&am=300&cu=INR&tn=Hospital+Payment`;
+    window.open(upiLink, '_blank');
+
+    // Start 5-minute countdown
+    let timeLeft = 300;
+    const timer = setInterval(() => {
+      timeLeft--;
+      timerBox.innerText = `⏳ Complete payment in: ${timeLeft}s`;
+      if (timeLeft <= 0) {
+        clearInterval(timer);
+        alert('Payment time expired - marked FAILED');
+        fetch(`/api/patient/${mo}/mark-failed`, { method: 'POST' });
+        window.location = '/patients';
+      }
+    }, 1000);
+
+    // Poll server for payment status every 4 seconds
+    const poll = setInterval(async () => {
+      const s = await fetch(`/api/patient/${mo}/status`);
+      if (s.status === 200) {
+        const st = await s.json();
+        if (st.status === 'SUCCESS') {
+          clearInterval(timer);
+          clearInterval(poll);
+          alert('Payment Successful — registration complete');
+          window.location = '/patients';
+        } else if (st.status === 'FAILED') {
+          clearInterval(timer);
+          clearInterval(poll);
+          alert('Payment Failed');
+          window.location = '/patients';
+        }
+      }
+    }, 4000);
+
+  });
+</script>
+
+</body>
+</html>
