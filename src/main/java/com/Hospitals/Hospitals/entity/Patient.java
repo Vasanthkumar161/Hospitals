@@ -1,7 +1,5 @@
 package com.Hospitals.Hospitals.entity;
 
-
-
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
@@ -12,22 +10,17 @@ public class Patient {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // basic patient info
     private String name;
     private String disease;
     private Integer age;
     private String gender;
-
-    // doctor chosen
     private String doctorName;
 
-    // payment fields
     private String paymentMethod; // PhonePe / UPI / Cash
-    private String upiId;         // when UPI selected
-    private Integer amount;       // in rupees (300)
+    private String upiId;
+    private Integer amount;
     private String paymentStatus; // PENDING / SUCCESS / FAILED
 
-    // optional merchant/order id if initiating online payment
     @Column(unique = true)
     private String merchantOrderId;
 
@@ -42,8 +35,7 @@ public class Patient {
         if (paymentStatus == null) paymentStatus = "PENDING";
     }
 
-    // getters and setters...
-    // (IDE will generate; include for all fields)
+    // getters and setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
     public String getName() { return name; }

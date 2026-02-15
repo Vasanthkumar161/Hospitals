@@ -17,58 +17,34 @@ public class PatientController {
     @Autowired
     private PatientService patientService;
 
-    // ================= Registration form =================
     @GetMapping("/patient_registration")
-    public String patientForm(@RequestParam(value="doctor", required=false) String doctor, Model model) {
-        Patient patient = new Patient();
-        if (doctor != null) {
-            patient.setDoctorName(doctor); // pre-fill doctor name
-        }
-        model.addAttribute("patient", patient);
+    public String patientForm(@RequestParam(value="doctor", required=false) String doctor, Model model){
+        Patient p = new Patient();
+        if(doctor!=null) p.setDoctorName(doctor);
+        model.addAttribute("patient",p);
         return "patient_registration";
     }
 
-    // ================= Save patient =================
     @PostMapping("/patient_registration")
-    public String savePatient(@ModelAttribute Patient patient) {
+    public String savePatient(@ModelAttribute Patient patient){
         Patient saved = patientService.createPendingPatient(patient);
-        return "redirect:/patient_success?id=" + saved.getId();
+        return "redirect:/patient_success?id="+saved.getId();
     }
 
-    // ================= Success page =================
     @GetMapping("/patient_success")
-    public String successPage(@RequestParam("id") Long id, Model model) {
-        Patient patient = patientService.getPatientById(id);
-        model.addAttribute("patient", patient);
+    public String successPage(@RequestParam("id") Long id, Model model){
+        Patient p = patientService.getPatientById(id);
+        model.addAttribute("patient",p);
         return "patient_success";
     }
 
-    // ================= Patient List page =================
     @GetMapping("/patients")
-    public String listPatients(@RequestParam(value="name", required=false) String name, Model model) {
-
-        List<Patient> patients;
-
-        if (name != null && !name.isEmpty()) {
-            patients = patientService.searchByName(name);
-            model.addAttribute("searchName", name);
-        } else {
-            patients = patientService.getAllPatients();
-        }
-
-        if (patients == null) {
-            patients = new ArrayList<>();
-        }
-
-        // Handle null amount safely
-        double totalAmount = patients.stream()
-                .mapToDouble(p -> p.getAmount() != null ? p.getAmount() : 0)
-                .sum();
-
+    public String listPatients(@RequestParam(value="name",required=false) String name, Model model){
+        List<Patient> patients = (name==null || name.isEmpty())?patientService.getAllPatients():patientService.searchByName(name);
         model.addAttribute("patients", patients);
+        double totalAmount = patients.stream().mapToDouble(p->p.getAmount()!=null?p.getAmount():0).sum();
         model.addAttribute("totalAmount", totalAmount);
-
+        model.addAttribute("searchName", name);
         return "patients_list";
     }
 }
-

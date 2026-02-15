@@ -1,47 +1,63 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="UTF-8">
-  <title>Doctors</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<meta charset="UTF-8">
+<title>Our Doctors</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+body { font-family: 'Poppins', sans-serif; background: linear-gradient(135deg, #eef2ff, #f9fbff);}
+.page-title { text-align:center; font-weight:700; margin-bottom:40px; }
+.doctor-card {
+    border-radius: 20px; padding:25px; background: rgba(255,255,255,0.9);
+    box-shadow: 0 15px 30px rgba(0,0,0,0.12); transition: all 0.4s ease;
+    position: relative;
+}
+.doctor-card:hover { transform: translateY(-10px) scale(1.02); box-shadow:0 25px 45px rgba(0,0,0,0.2);}
+.doctor-card::before {
+    content:""; position:absolute; top:0; left:0; width:100%; height:6px;
+    background: linear-gradient(90deg,#0d6efd,#6610f2);
+}
+.doctor-icon { font-size:50px; color:#0d6efd; }
+.doctor-name { font-weight:600; margin-top:10px; }
+.doctor-spec { color:#6c757d; font-size:14px; }
+.doctor-time { font-weight:500; margin-top:8px; }
+.btn-appointment { border-radius:14px; font-weight:500; padding:10px; }
+</style>
 </head>
 <body>
-<nav class="navbar navbar-dark bg-dark">
-  <div class="container">
-    <a class="navbar-brand text-white" href="/">Vasanth Chowdary Hospitals</a>
-    <a class="btn btn-outline-light" href="/patients">Patients</a>
-  </div>
-</nav>
-
-<div class="container mt-4">
-  <h3>Our Doctors</h3>
-
-  <div class="row">
-    <div class="col-md-4">
-      <div class="card p-3 mb-3">
-        <h5>Dr. Vasanth Chowdary</h5>
-        <p>Cardiologist — 10 AM - 04 PM</p>
-        <a th:href="@{/patient_registration(doctor='Dr. Vasanth Chowdary')}" class="btn btn-primary w-100">Book Appointment</a>
-      </div>
+<div class="container my-5">
+    <h2 class="page-title"><i class="bi bi-heart-pulse-fill text-primary me-1"></i>Our Specialist Doctors</h2>
+    <div class="row g-4">
+        <div class="col-md-4">
+            <div class="doctor-card text-center">
+                <i class="bi bi-person-badge-fill doctor-icon"></i>
+                <h5 class="doctor-name" th:text="${doctor1}">Dr. Vasanth Chowdary</h5>
+                <p class="doctor-spec">Cardiologist</p>
+                <p class="doctor-time"><i class="bi bi-clock-fill text-primary"></i>10:00 AM – 04:00 PM</p>
+                <a th:href="@{/patient_registration(doctor=${doctor1})}" class="btn btn-primary btn-appointment w-100 mt-3"><i class="bi bi-calendar-check me-1"></i>Book Appointment</a>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="doctor-card text-center">
+                <i class="bi bi-person-badge-fill doctor-icon"></i>
+                <h5 class="doctor-name" th:text="${doctor2}">Dr. Hemanth Reddy</h5>
+                <p class="doctor-spec">Physiotherapist</p>
+                <p class="doctor-time"><i class="bi bi-clock-fill text-primary"></i>12:00 PM – 02:00 PM</p>
+                <a th:href="@{/patient_registration(doctor=${doctor2})}" class="btn btn-primary btn-appointment w-100 mt-3"><i class="bi bi-calendar-check me-1"></i>Book Appointment</a>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="doctor-card text-center">
+                <i class="bi bi-person-badge-fill doctor-icon"></i>
+                <h5 class="doctor-name" th:text="${doctor3}">Dr. Chandana Chowdary</h5>
+                <p class="doctor-spec">Skin Specialist</p>
+                <p class="doctor-time"><i class="bi bi-clock-fill text-primary"></i>03:00 PM – 07:00 PM</p>
+                <a th:href="@{/patient_registration(doctor=${doctor3})}" class="btn btn-primary btn-appointment w-100 mt-3"><i class="bi bi-calendar-check me-1"></i>Book Appointment</a>
+            </div>
+        </div>
     </div>
-
-    <div class="col-md-4">
-      <div class="card p-3 mb-3">
-        <h5>Dr. Hemanth Reddy</h5>
-        <p>Physiotherapy — 12 PM - 02 PM</p>
-        <a th:href="@{/patient_registration(doctor='Dr. Hemanth Reddy')}" class="btn btn-primary w-100">Book Appointment</a>
-      </div>
-    </div>
-
-    <div class="col-md-4">
-      <div class="card p-3 mb-3">
-        <h5>Dr. Chandana Chowdary</h5>
-        <p>Skin Specialist — 03 PM - 07 PM</p>
-        <a th:href="@{/patient_registration(doctor='Dr. Chandana Chowdary')}" class="btn btn-primary w-100">Book Appointment</a>
-      </div>
-    </div>
-  </div>
-
 </div>
 </body>
 </html>

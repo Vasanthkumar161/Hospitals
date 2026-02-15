@@ -1,194 +1,150 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vasanth Chowdary Hospitals</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vasanth Chowdary Hospitals</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+body { font-family:'Poppins',sans-serif; background:linear-gradient(135deg,#eef2ff,#f9fbff); min-height:100vh;}
+.navbar-brand { font-weight:700; color:#0d6efd !important; }
+.navbar-nav .nav-link { font-weight:500; transition:0.3s; }
+.navbar-nav .nav-link:hover { color:#0d6efd !important; }
 
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+.hero-section { padding:80px 20px; text-align:center; animation:fadeIn 1s ease-in; }
+.hero-section h1 { font-weight:700; color:#0d6efd; margin-bottom:20px; }
+.hero-section p { font-size:1.1rem; color:#555; margin-bottom:30px; }
+a.btn { border-radius:30px; padding:12px 30px; font-weight:600; transition:all 0.3s; }
+a.btn:hover { transform:translateY(-3px); box-shadow:0 10px 25px rgba(0,0,0,0.2); }
 
-    <style>
-        /* ================= NEWS TICKER ================= */
-        .news-ticker {
-            background-color: #0d6efd;
-            color: white;
-            overflow: hidden;
-            white-space: nowrap;
-            padding: 8px 0;
-            font-weight: bold;
-        }
+.cards-section { padding:60px 20px; }
+.card { border-radius:20px; transition:all 0.3s; }
+.card:hover { transform:translateY(-10px); box-shadow:0 20px 40px rgba(0,0,0,0.2); }
+.card-title { font-weight:600; }
+.card-text { color:#666; }
 
-        .news-text {
-            display: inline-block;
-            padding-left: 100%;
-            animation: scroll-left 18s linear infinite;
-        }
-
-        @keyframes scroll-left {
-            0% {
-                transform: translateX(0);
-            }
-            100% {
-                transform: translateX(-100%);
-            }
-        }
-
-        /* ================= DOCTOR CARDS ================= */
-        .doctor-card {
-            transition: 0.3s;
-            border-radius: 12px;
-        }
-
-        .doctor-card:hover {
-            transform: scale(1.03);
-            box-shadow: 0 4px 14px rgba(0,0,0,0.2);
-        }
-
-        .doctor-photo {
-            width: 110px;
-            height: 110px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 3px solid #0d6efd;
-            display: block;
-            margin: auto;
-        }
-    </style>
+@keyframes fadeIn { from{opacity:0; transform:translateY(20px);} to{opacity:1; transform:translateY(0);} }
+footer { padding:40px 20px; background-color:#0d6efd; color:#fff; text-align:center; }
+</style>
 </head>
 <body>
 
-<!-- ============================ NAVBAR ============================ -->
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow">
-    <div class="container-fluid">
-
-        <a class="navbar-brand fw-bold" href="/" th:href="@{/}">
-            <i class="bi bi-hospital"></i> Vasanth Chowdary Hospitals
-        </a>
-
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" 
-                data-bs-target="#navbarNav">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ms-auto">
-
-                <a href="https://wa.me/9182229653" target="_blank" class="btn btn-success mx-2">
-                    <i class="bi bi-whatsapp"></i> Chat
-                </a>
-
-                <li class="nav-item">
-                    <a class="nav-link text-white" th:href="@{/}">Home</a>
-                </li>
-
-                <li class="nav-item">
-                    <a class="nav-link text-white" th:href="@{/patient_registration}">
-                        Patient Registration
-                    </a>
-                </li>
-
-                <!-- Nurses Dropdown -->
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle text-white" href="#" data-bs-toggle="dropdown">
-                        Nurses
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li>
-                            <a class="dropdown-item" th:href="@{/nurses/edit/0}">
-                                Nurse Registration
-                            </a>
-                        </li>
-                        <li>
-                            <a class="dropdown-item" th:href="@{/nurses}">
-                                View Nurses
-                            </a>
-                        </li>
-                        <li>
-                            <a class="dropdown-item" th:href="@{/nurses/attendance}">
-                                Nurse Attendance
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-
-            </ul>
-        </div>
-    </div>
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm fixed-top">
+<div class="container">
+<a class="navbar-brand" th:href="@{/home}">Vasanth Kumar Hospitals</a>
+<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+<span class="navbar-toggler-icon"></span>
+</button>
+<div class="collapse navbar-collapse" id="navbarNav">
+<ul class="navbar-nav ms-auto">
+<li class="nav-item"><a class="nav-link" href="#departments">Departments</a></li>
+<li class="nav-item"><a class="nav-link" href="#doctors">Doctors</a></li>
+<li class="nav-item"><a class="nav-link" th:href="@{/patient_registration}">Appointments</a></li>
+<li class="nav-item"><a class="nav-link" th:href="@{/patients}">Patients List</a></li>
+<li class="nav-item"><a class="nav-link" th:href="@{/nurses}">Nurses</a></li>
+<li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+</ul>
+</div>
+</div>
 </nav>
 
-<!-- ============================ NEWS SCROLL ============================ -->
+<!-- Hero Section -->
+<section class="hero-section">
+<h1>Welcome to Vasanth Kumar Hospitals</h1>
+<p>Your health is our priority. Book appointments with the best specialists in town.</p>
+<a th:href="@{/patient_registration}" class="btn btn-primary me-2">Book Appointment</a>
+<a th:href="@{/nurses}" class="btn btn-success">Our Nurses</a>
+</section>
 
+<!-- Departments Section -->
+<section class="cards-section container" id="departments">
+<h2 class="text-center mb-5">Our Departments</h2>
+<div class="row g-4">
+<div class="col-md-4">
+<div class="card p-3">
+<img src="https://placeimg.com/400/200/health" class="card-img-top rounded" alt="Cardiology">
+<div class="card-body">
+<h5 class="card-title">Cardiology</h5>
+<p class="card-text">Expert heart care and advanced cardiovascular treatments.</p>
+<a href="#" class="btn btn-primary">Know More</a>
+</div>
+</div>
+</div>
+<div class="col-md-4">
+<div class="card p-3">
+<img src="https://placeimg.com/400/200/medical" class="card-img-top rounded" alt="Neurology">
+<div class="card-body">
+<h5 class="card-title">Neurology</h5>
+<p class="card-text">Comprehensive care for brain and nervous system disorders.</p>
+<a href="#" class="btn btn-success">Know More</a>
+</div>
+</div>
+</div>
+<div class="col-md-4">
+<div class="card p-3">
+<img src="https://placeimg.com/400/200/tech" class="card-img-top rounded" alt="Pediatrics">
+<div class="card-body">
+<h5 class="card-title">Pediatrics</h5>
+<p class="card-text">Specialized care for children and newborns with compassion.</p>
+<a href="#" class="btn btn-warning text-white">Know More</a>
+</div>
+</div>
+</div>
+</div>
+</section>
 
-<!-- ============================ DOCTORS SECTION ============================ -->
-<div class="container mt-5">
+<!-- Doctors Section -->
+<section class="cards-section container" id="doctors">
+<h2 class="text-center mb-5">Meet Our Doctors</h2>
+<div class="row g-4">
 
-    <h3 class="text-center mb-4 text-primary fw-bold">
-        <i class="bi bi-person-badge"></i> Our Specialist Doctors
-    </h3>
-
-    <div class="row">
-
-        <!-- Doctor 1 -->
-        <div class="col-md-4 mb-4">
-            <div class="card doctor-card p-3 text-center shadow">
-                <img src="https://static.vecteezy.com/system/resources/thumbnails/071/551/144/small/portrait-of-a-friendly-smiling-male-doctor-in-a-modern-hospital-clinic-photo.jpg" 
-                     class="doctor-photo mb-3">
-                <h5 class="text-primary fw-bold">Dr. Vasanth Chowdary</h5>
-                <p><b>ID:</b> 108021</p>
-                <p><b>Specialization:</b> Cardiologist</p>
-                <p><b>Timings:</b> 10 AM - 04 PM</p>
-                <a th:href="@{/patient_registration(doctor='Dr. Vasanth Chowdary')}" 
-                   class="btn btn-primary w-75 mx-auto">
-                    Take Appointment
-                </a>
-            </div>
-        </div>
-
-        <!-- Doctor 2 -->
-        <div class="col-md-4 mb-4">
-            <div class="card doctor-card p-3 text-center shadow">
-                <img src="https://media.istockphoto.com/id/179011088/photo/indian-doctor.jpg?s=612x612&w=0&k=20&c=EwRn1EWy79prCtdo8yHM6hvCVVcaKTznVBpVURPJxt4=" 
-                     class="doctor-photo mb-3">
-                <h5 class="text-primary fw-bold">Dr. Revanth Reddy</h5>
-                <p><b>ID:</b> 223453</p>
-                <p><b>Specialization:</b> Physiotherapy</p>
-                <p><b>Timings:</b> 12 PM - 02 PM</p>
-                <a th:href="@{/patient_registration(doctor='Dr. Hemanth Reddy')}" 
-                   class="btn btn-primary w-75 mx-auto">
-                    Take Appointment
-                </a>
-            </div>
-        </div>
-
-        <!-- Doctor 3 -->
-        <div class="col-md-4 mb-4">
-            <div class="card doctor-card p-3 text-center shadow">
-                <img src="https://media.istockphoto.com/id/1742056601/photo/photo-of-doctor-lady-smile-looking-at-camera-wear-stethoscope-white-uniform-isolate-white.jpg?s=612x612&w=0&k=20&c=XxMIMOssaMAT2zViPWohJGX51ymcSyY9RxtbiYYLEIE=" 
-                     class="doctor-photo mb-3">
-                <h5 class="text-primary fw-bold">Dr. Saraswathi</h5>
-                <p><b>ID:</b> 312356</p>
-                <p><b>Specialization:</b> Skin Specialist</p>
-                <p><b>Timings:</b> 03 PM - 07 PM</p>
-                <a th:href="@{/patient_registration(doctor='Dr. Chandana Chowdary')}" 
-                   class="btn btn-primary w-75 mx-auto">
-                    Take Appointment
-                </a>
-            </div>
-        </div>
-
-    </div>
+<!-- Doctor 1 - Male -->
+<div class="col-md-4">
+<div class="card p-3 text-center">
+<img src="https://randomuser.me/api/portraits/men/32.jpg" class="rounded-circle mx-auto d-block" alt="Dr. Ramesh Rao">
+<div class="card-body">
+<h5 class="card-title">Dr. Ramesh Rao</h5>
+<p class="card-text">Cardiologist with 15+ years of experience.</p>
+<a th:href="@{/patient_registration}" class="btn btn-primary">Book Now</a>
+</div>
+</div>
 </div>
 
-<!-- ============================ FOOTER ============================ -->
-<footer class="bg-dark text-white text-center p-3 mt-5">
-    © 2025 Vasanth Chowdary Hospitals | All Rights Reserved
+<!-- Doctor 2 - Female -->
+<div class="col-md-4">
+<div class="card p-3 text-center">
+<img src="https://randomuser.me/api/portraits/women/45.jpg" class="rounded-circle mx-auto d-block" alt="Dr. Priya Sharma">
+<div class="card-body">
+<h5 class="card-title">Dr. Priya Sharma</h5>
+<p class="card-text">Neurologist specializing in brain disorders.</p>
+<a th:href="@{/patient_registration}" class="btn btn-success">Book Now</a>
+</div>
+</div>
+</div>
+
+<!-- Doctor 3 - Male -->
+<div class="col-md-4">
+<div class="card p-3 text-center">
+<img src="https://randomuser.me/api/portraits/men/56.jpg" class="rounded-circle mx-auto d-block" alt="Dr. Vasanth Kumar">
+<div class="card-body">
+<h5 class="card-title">Dr. Vasanth Kumar</h5>
+<p class="card-text">Pediatrician with caring approach for children.</p>
+<a th:href="@{/patient_registration}" class="btn btn-warning text-white">Book Now</a>
+</div>
+</div>
+</div>
+
+</div>
+</section>
+
+<!-- Footer -->
+<footer id="contact">
+<p>&copy; 2026 Vasanth Chowdary Hospitals. All rights reserved.</p>
+<p>Email: info@vasanthhospital.com | Phone: +91 9876543210</p>
 </footer>
 
-<!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-
 </body>
 </html>
-
