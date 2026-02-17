@@ -3,177 +3,200 @@
 <head>
 <meta charset="UTF-8">
 <title>Patients List - Vasanth Chowdary Hospitals</title>
+
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
 <style>
-/* Body & Container */
-body {
-    font-family: 'Poppins', sans-serif;
-    background: linear-gradient(135deg, #f0f4ff, #ffffff);
-    padding: 20px;
-    min-height: 100vh;
-}
-.container {
-    max-width: 950px;
-    margin: auto;
-    padding: 30px;
-    background: #ffffff;
-    border-radius: 25px;
-    box-shadow: 0 25px 60px rgba(0,0,0,0.08);
-    animation: fadeIn 0.8s ease forwards;
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
 }
 
-/* Animations */
-@keyframes fadeIn { from {opacity:0; transform: translateY(20px);} to {opacity:1; transform: translateY(0);} }
-@keyframes fadeInDown { from {opacity:0; transform: translateY(-20px);} to {opacity:1; transform: translateY(0);} }
-@keyframes pulse { 0%{transform:scale(1);opacity:0.8} 50%{transform:scale(1.05);opacity:1} 100%{transform:scale(1);opacity:0.8} }
+body{
+    font-family:'Poppins',sans-serif;
+    background:#f4f6f9;
+    min-height:100vh;
+    padding:40px 20px;
+}
+
+/* Main Container */
+.container{
+    max-width:1100px;
+    margin:auto;
+    background:#ffffff;
+    padding:40px;
+    border-radius:18px;
+    box-shadow:0 15px 40px rgba(0,0,0,0.06);
+}
 
 /* Header */
-h2 {
-    text-align: center;
-    font-weight: 700;
-    font-size: 2rem;
-    margin-bottom: 30px;
-    color: #0d6efd;
-    animation: fadeInDown 1s ease;
+h2{
+    text-align:center;
+    font-weight:600;
+    margin-bottom:35px;
+    color:#2c3e50;
+    letter-spacing:1px;
 }
 
-/* Search Form */
-.form-inline {
-    text-align: center;
-    margin-bottom: 25px;
+/* Search */
+.form-inline{
+    text-align:center;
+    margin-bottom:30px;
 }
-.form-inline input {
-    border-radius: 25px;
-    padding: 10px 20px;
-    width: 250px;
-    margin-right: 10px;
-    border: 1px solid #ced4da;
-    transition: all 0.3s ease;
+
+.form-inline input{
+    border-radius:8px;
+    padding:10px 15px;
+    width:260px;
+    border:1px solid #ddd;
 }
-.form-inline input:focus {
-    border-color: #0d6efd;
-    box-shadow: 0 0 10px rgba(13,110,253,0.2);
+
+.form-inline input:focus{
+    border-color:#198754;
+    box-shadow:none;
 }
-.form-inline button {
-    border-radius: 25px;
-    padding: 10px 25px;
-    font-weight: 600;
-    transition: all 0.3s ease;
+
+.form-inline button{
+    border-radius:8px;
+    padding:10px 20px;
+    background:#198754;
+    border:none;
+    font-weight:500;
 }
-.form-inline button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(13,110,253,0.3);
+
+.form-inline button:hover{
+    background:#157347;
 }
 
 /* Table */
-.table {
-    border-radius: 15px;
-    overflow: hidden;
+.table{
+    background:#fff;
+    border-radius:10px;
+    overflow:hidden;
 }
-.table thead th {
-    background: linear-gradient(135deg,#0d6efd,#6610f2);
-    color:#fff;
+
+.table thead{
+    background:#2c3e50;
+    color:#ffffff;
+}
+
+.table thead th{
     text-align:center;
+    padding:15px;
+    font-weight:500;
 }
-.table tbody tr {
-    transition: all 0.4s ease;
-    cursor: pointer;
-    box-shadow: 0 0 0 rgba(0,0,0,0);
+
+.table tbody tr{
+    transition:0.3s;
 }
-.table tbody tr:hover {
-    transform: scale(1.02);
-    box-shadow: 0 10px 25px rgba(0,0,0,0.08);
-    background: #eef4ff;
+
+.table tbody tr:hover{
+    background:#f8f9fa;
 }
-.table td { text-align:center; vertical-align:middle; }
+
+.table td{
+    text-align:center;
+    padding:14px;
+    vertical-align:middle;
+}
 
 /* Payment Status */
-.payment-success {
-    background: linear-gradient(135deg,#28a745,#198754);
-    color: #fff;
-    padding: 6px 14px;
-    border-radius: 25px;
-    font-weight: 500;
-    display: inline-block;
-    animation: pulse 1.5s infinite;
+.payment-success{
+    background:#d1e7dd;
+    color:#0f5132;
+    padding:6px 14px;
+    border-radius:20px;
+    font-weight:500;
 }
-.payment-pending {
-    background: linear-gradient(135deg,#ffc107,#ffcd39);
-    color: #fff;
-    padding: 6px 14px;
-    border-radius: 25px;
-    font-weight: 500;
-    display: inline-block;
-    animation: pulse 1.5s infinite;
+
+.payment-pending{
+    background:#fff3cd;
+    color:#664d03;
+    padding:6px 14px;
+    border-radius:20px;
+    font-weight:500;
 }
 
 /* Total Amount */
-.total-amount {
+.total-amount{
     text-align:right;
-    font-weight: 700;
-    font-size: 1.4rem;
-    margin-top: 20px;
-    color: #6610f2;
-    animation: fadeIn 1s ease forwards;
+    font-weight:600;
+    font-size:1.3rem;
+    margin-top:30px;
+    color:#2c3e50;
 }
 
-/* No patients found */
-.no-patients {
+/* No Patients */
+.no-patients{
     text-align:center;
     color:#6c757d;
-    font-weight:500;
     padding:20px 0;
 }
+
 </style>
 </head>
+
 <body>
+
 <div class="container">
-    <h2>Patients List</h2>
 
-    <!-- Search -->
-    <form method="get" class="form-inline">
-        <input type="text" name="name" placeholder="Search by name" th:value="${searchName}">
-        <button type="submit" class="btn btn-primary">Search</button>
-    </form>
+<h2>Patients List</h2>
 
-    <!-- Patients Table -->
-    <div class="table-responsive">
-        <table class="table table-hover align-middle">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Name</th>
-                    <th>Disease</th>
-                    <th>Doctor</th>
-                    <th>Amount (₹)</th>
-                    <th>Payment Status</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr th:each="p: ${patients}">
-                    <td th:text="${p.id}">1</td>
-                    <td th:text="${p.name}">John Doe</td>
-                    <td th:text="${p.disease}">Flu</td>
-                    <td th:text="${p.doctorName}">Dr. Sharma</td>
-                    <td th:text="${p.amount}">5000</td>
-                    <td>
-                        <span th:classappend="${p.paymentStatus=='SUCCESS'}?'payment-success':'payment-pending'" th:text="${p.paymentStatus}">SUCCESS</span>
-                    </td>
-                </tr>
-                <tr th:if="${patients.size()==0}">
-                    <td colspan="6" class="no-patients">No patients found</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+<!-- Search -->
+<form method="get" class="form-inline">
+    <input type="text" name="name" placeholder="Search by name" th:value="${searchName}">
+    <button type="submit">Search</button>
+</form>
 
-    <!-- Total Amount -->
-    <div class="total-amount">
-        Total Amount Collected: ₹ <span th:text="${totalAmount}">15000</span>
-    </div>
+<!-- Patients Table -->
+<div class="table-responsive">
+<table class="table table-hover align-middle">
+
+<thead>
+<tr>
+<th>ID</th>
+<th>Name</th>
+<th>Disease</th>
+<th>Doctor</th>
+<th>Amount (₹)</th>
+<th>Payment Status</th>
+</tr>
+</thead>
+
+<tbody>
+
+<tr th:each="p: ${patients}">
+<td th:text="${p.id}">1</td>
+<td th:text="${p.name}">John Doe</td>
+<td th:text="${p.disease}">Flu</td>
+<td th:text="${p.doctorName}">Dr. Sharma</td>
+<td th:text="${p.amount}">5000</td>
+<td>
+<span th:classappend="${p.paymentStatus=='SUCCESS'}?'payment-success':'payment-pending'"
+      th:text="${p.paymentStatus}">SUCCESS</span>
+</td>
+</tr>
+
+<tr th:if="${patients.size()==0}">
+<td colspan="6" class="no-patients">No patients found</td>
+</tr>
+
+</tbody>
+
+</table>
+</div>
+
+<!-- Total Amount -->
+<div class="total-amount">
+Total Amount Collected: ₹ <span th:text="${totalAmount}">15000</span>
+</div>
+
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
 </body>
 </html>
